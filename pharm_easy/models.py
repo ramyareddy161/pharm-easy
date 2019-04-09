@@ -44,3 +44,6 @@ class MyCart(models.Model):
 
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
     user_profile = models.ForeignKey(UserProfile,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user_profile.name

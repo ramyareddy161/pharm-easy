@@ -24,6 +24,8 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const BundleTracker = require('webpack-bundle-tracker');
+const publicPath = 'http://localhost:3000/';
+const publicUrl = 'http://localhost:3000/'; 
 
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.

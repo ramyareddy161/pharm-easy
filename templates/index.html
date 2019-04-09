@@ -4,11 +4,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <title>Pharm Easy</title>
   </head>
   <body>
     <div id="root">
     </div>
+      <!--<script src="build/static/js/2.58785d79.chunk.js"></script>-->
+      <!--<script src="build/static/js/main.36041fb4.chunk.js"></script>-->
+      <!--<script src="build/static/css/main.d3c0c976.chunk.css"></script>-->
+      <!--<script src="build/static/js/runtime~main.c04ad13f.js"></script>-->
       {% render_bundle 'main' %}
+      {% render_bundle 'undefined' %}
+      {% render_bundle 'runtime~main' %}
   </body>
 </html>

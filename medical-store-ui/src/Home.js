@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import medical_side_pic from '././static/medical_side_pic.png';
+import Header from './Header';
 
 class Home extends Component {
+    constructor(){
+        super();
+    }
     render() {
       return (
+        <div>
+        <Header isAuthenticated={this.props.isAuthenticated} username={this.props.username}/>
         <div className="margin margin-top">
         <h3 className="heading">Pharm Easy</h3>
         <div className="centerAlign">
@@ -14,6 +20,7 @@ class Home extends Component {
             <div>
                 <img className="medicalSidePic" alt="medicalSidePic" src={medical_side_pic}/>
             </div>
+        </div>
         </div>
         </div>
       );

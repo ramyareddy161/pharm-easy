@@ -1,19 +1,21 @@
 import React, { Component } from 'react'
 import Cookies from 'universal-cookie';
 import { withRouter } from 'react-router';
+import Header from './Header';
 
 class Register extends Component{
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
-            auth_url : 'https://ramyareddy-colloquium.herokuapp.com/api-basictoken-auth/',
-            jwt_url : 'https://ramyareddy-colloquium.herokuapp.com/api-jwttoken-auth/',
+            auth_url : 'http://127.0.0.1:8000/api-basictoken-auth/',
+            jwt_url : 'http://127.0.0.1:8000/api-jwttoken-auth/',
             buttonName : 'Register',
             first_name : "",
             last_name : "",
             username : "" ,
             password: "",
             location: "",
+            contact: "",
         };
     }
     cookies = new Cookies();
@@ -55,6 +57,13 @@ class Register extends Component{
         })
     }
 
+    saveContact = (event) => {
+        const {target : {value}}  = event;
+        this.setState({
+            contact : value
+        })
+    }
+
     logout = (props) =>
     {
         this.cookies.remove('userJwtToken');
@@ -67,15 +76,14 @@ class Register extends Component{
 
     submit = (e) =>{
         var data=JSON.stringify({
-            user : {
                 username: this.state.username,
                 first_name: this.state.first_name,
                 last_name: this.state.last_name,
                 password: this.state.password,
-            },
                 location: this.state.location,
+                contact: this.state.contact
         });
-        fetch('https://ramyareddy-colloquium.herokuapp.com/forum/api/auth/register/',{
+        fetch('http://127.0.0.1:8000/pharm_easy/api/auth/register/',{
             method:'POST',
             headers: new Headers({
                  'Content-Type': 'application/json',
@@ -99,7 +107,7 @@ class Register extends Component{
             //     status:true
             // });
             alert("Registered Successfully");
-            this.props.history.push('/forum/templateview/login/');
+            this.props.history.push('/login');
         })
         .catch(e => {console.log (e);});
         }
@@ -107,25 +115,30 @@ class Register extends Component{
     
     render(){
         return (
+            <div>
+            <Header isAuthenticated={this.props.isAuthenticated} username={this.props.username}/>
             <div className= "margin margin-top modalAlign">
                 <form className = "modal-content animate d-block" style={{height: "330px",padding: "15px"}}>
-                <div class="textAlignC">
+                <div className="textAlignC">
                 <h3 className="heading"> Pharm Easy </h3>
-                <label for="first_name" className="p-l-r"><b> First_Name </b></label>
-                <input onChange={this.saveFirst_name} type="text" placeholder="Enter first_name"/><br/><br/>
-                <label for="last_name" className="p-l-r"><b> Last_Name </b></label>
-                <input onChange={this.saveLast_name} type="text" placeholder="Enter last_name"/><br/><br/>
-                <label for="username" className="p-l-r"><b> UserName </b></label>
+                <label htmlFor="first_name" className="p-l-r"><b> First_Name </b></label>
+                <input onChange={this.saveFirst_name} type="text" placeholder="Enter first_name"/><br/>
+                <label htmlFor="last_name" className="p-l-r"><b> Last_Name </b></label>
+                <input onChange={this.saveLast_name} type="text" placeholder="Enter last_name"/><br/>
+                <label htmlFor="username" className="p-l-r"><b> UserName </b></label>
                 <input onChange={this.saveUsername} type="text" placeholder="Enter username"/><br/>
-                <label for="password" className="p-l-r"><b> Password </b></label>
+                <label htmlFor="password" className="p-l-r"><b> Password </b></label>
                 <input onChange={this.savePassword} type="password" placeholder="Enter Password"/><br/>
-                <label for="location" className="p-l-r"><b> Location </b></label>
+                <label htmlFor="location" className="p-l-r"><b> Location </b></label>
                 <input onChange={this.saveLocation} type="text" placeholder="Enter Location"/><br/>
+                <label htmlFor="contact" className="p-l-r"><b> Contact </b></label>
+                <input onChange={this.saveContact} type="text" placeholder="Enter Contact"/><br/>
                 <div className="p-10 centerAlign">
                 <button onClick={this.submit} className={"btn btn-primary m-auto"} value="Register">Register</button>
                 </div>
                 </div>
                 </form>
+            </div>
             </div>
         )
     }

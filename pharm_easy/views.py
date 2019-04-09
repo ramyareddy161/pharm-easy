@@ -10,6 +10,7 @@ from rest_framework import status, generics, permissions
 from rest_framework.decorators import api_view
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from pharm_easy.models import *
 from pharm_easy.serializers import *
@@ -94,7 +95,7 @@ def medicalshop_list(request):
         return JsonResponse(serializer.data,safe=False)
 
     elif request.method == 'POST':
-        serializer = MedicalShopSerializer(data=request.data)
+        serializer = MedicineDetailSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
@@ -121,8 +122,8 @@ def medicine_list(request):
 def mycart_list(request):
     #permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
     if request.method == 'GET':
-        mycart_list =  Medicine.objects.all()
-        serializer = MyCartDetailSerializer(medicine_list, many=True)
+        mycart_list =  MyCart.objects.all()
+        serializer = MyCartDetailSerializer(mycart_list, many=True)
         return JsonResponse(serializer.data,safe=False)
 
     elif request.method == 'POST':
@@ -139,18 +140,24 @@ class CreateMedicalShopJsonView(CreateAPIView):
     serializer_class = CreateMedicalShopSerializer
 
 
-class CreateMedicineJsonView(ListAPIView):
+class MedicineDetailJsonView(ListAPIView):
     #permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
-    serializer_class = CreateMedicineSerializer
+    serializer_class = MedicineDetailSerializer
     def get_queryset(self):
-        medicines = Medicine.objects.all
+        medicines = Medicine.objects.filter(id=self.kwargs['medicine_id'])
         return medicines
 
 
 class CreateMyCartJsonView(CreateAPIView):
     #permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
+    queryset = MyCart.objects.all
     serializer_class = CreateMyCartSerializer
 
-    def get_queryset(self):
-        mycart = MyCart.objects.filter(user__id=self.kwargs['user_id'])
-        return mycart
+    def get_serializer_context(self):
+        return {"user_id": self.request.user.id, "medicine_id": self.kwargs["medicine_id"]}
+
+
+class CurrentUserJsonView(APIView):
+    def get(self, request):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)

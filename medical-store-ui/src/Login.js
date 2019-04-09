@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
 import Cookies from 'universal-cookie';
 import { withRouter } from 'react-router';
+import Header from './Header';
 
 class Login extends Component{
     cookies = new Cookies();
     state = {
-        auth_url : 'https://ramyareddy-colloquium.herokuapp.com/api-basictoken-auth/',
-        jwt_url : 'https://ramyareddy-colloquium.herokuapp.com/api-jwttoken-auth/',
-        // auth_url : 'http://127.0.0.1:8000/api-basictoken-auth/',
-        // jwt_url : 'http://127.0.0.1:8000/api-jwttoken-auth/',
-        buttonName : 'Login',
+        auth_url : 'http://127.0.0.1:8000/api-basictoken-auth/',
+        jwt_url : 'http://127.0.0.1:8000/api-jwttoken-auth/',
         username : "" ,
         password: ""
+    }
+    constructor(){
+        super();
     }
 
     saveUsername = (event) => {
@@ -40,7 +41,6 @@ class Login extends Component{
         console.log(this.cookies.get('userJwtToken'));
         this.props.updateUsername('');
         this.props.updateStatus(false);
-        this.setState(prev => ( {buttonName : 'Login'}));
     }
     
     login = ({username, password}) =>
@@ -63,8 +63,7 @@ class Login extends Component{
                 console.log(this.cookies.get('userJwtToken'));
                 this.props.updateUsername(formData.get('username'));
                 this.props.updateStatus(true);
-                this.setState(prev => ( {buttonName : 'Logout'}));
-                this.props.history.push('/forum/templateview');
+                this.props.history.push('/medicines');
                 console.log("Redirecting....")
             }
             else{
@@ -76,21 +75,24 @@ class Login extends Component{
 
     render(){
         return (
+        <div>
+        <Header isAuthenticated={this.props.isAuthenticated} username={this.props.username}/>
         <div className = "main margin margin-top modalAlign">
-            <form class="modal-content animate">
-            <div class="textAlignC">
+            <form className="modal-content animate">
+            <div className="textAlignC">
             <h3 className="heading"> Pharm Easy </h3>
-                <label for="uname"><b> Username  </b></label>
+                <label htmlFor="uname"><b> Username  </b></label>
                 <input type="text" onChange={this.saveUsername} placeholder="Enter Username" name="uname" required/>
                 <br/>
-                <label for="psw"><b> Password  </b></label>
+                <label htmlFor="psw"><b> Password  </b></label>
                 <input type="password" onChange={this.savePassword} placeholder="Enter Password" name="psw" required/>
                 <br/>
                 {/* <Button color="secondary" type="submit" onClick={this.submit} className={"btn btn-primary"} value="Login">Login</Button> */}
                 <button type="submit" onClick={this.submit} className={"btn btn-primary"} value="Login">Login</button>
-                New User ? <a href="/user/register"> Register Here </a>
+                New User ? <a href="/register"> Register Here </a>
             </div>
             </form>
+        </div>
         </div>
         )
     }

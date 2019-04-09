@@ -100,13 +100,14 @@ class CreateMedicineSerializer(serializers.ModelSerializer):
 
 class CreateMyCartSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MyCart
-        fields = ["id", "total_cost", "date_of_purchase", "medicine", "user_profile"]
+        model=MyCart
+        fields= ["medicine", "user_profile"]
     def create(self, validated_data):
         user_id=self.context['user_id']
-        user_profile=UserProfile.objects.get(user_id=user_id)
+        user = User.objects.get(id=user_id)
+        user_profile=UserProfile.objects.get(user=user)
         medicine_id = self.context['medicine_id']
-        medicine = Medicine.objects.get(id=medicine_id)
-        mycart = MyCart.objects.create(medicine=medicine, **validated_data, user_profile=user_profile)
-        return mycart
+        medicine=Medicine.objects.get(id=medicine_id)
+        my_cart=MyCart.objects.create(medicine=medicine,**validated_data,user_profile=user_profile)
+        return my_cart
 

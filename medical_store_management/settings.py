@@ -139,6 +139,16 @@ REST_FRAMEWORK = {
 
 REACT_APP_DIR = os.path.join(BASE_DIR, 'static')
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'pharm_easy',
+        'HOST': 'localhost',
+        'USER': "root",
+        'PASSWORD': "root"
+    }
+}
+
 WEBPACK_LOADER = {
     'DEFAULT': {
             'BUNDLE_DIR_NAME': 'bundles/',
